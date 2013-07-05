@@ -670,7 +670,8 @@ public class BeanWrapperImpl extends AbstractPropertyAccessor implements BeanWra
 					if ((key.startsWith("'") && key.endsWith("'")) || (key.startsWith("\"") && key.endsWith("\""))) {
 						key = key.substring(1, key.length() - 1);
 					}
-					keys.add(key);
+					if(!key.isEmpty()) // do not add map key for variable names like test[]
+						keys.add(key);
 					searchIndex = keyEnd + PROPERTY_KEY_SUFFIX.length();
 				}
 			}

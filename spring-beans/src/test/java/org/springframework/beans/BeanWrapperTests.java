@@ -1507,7 +1507,25 @@ public final class BeanWrapperTests {
 		assertEquals(Double.MAX_VALUE, bean.getMyDouble().doubleValue(), 0.001);
 
 	}
-
+	
+	@Test
+	public void testSetArrayOfStringsUsingPostName() throws Exception {
+		String[] value = new String[]{"123", "345", "678"};
+		
+		PropertyValue propertyValue = new PropertyValue("test[]", value);
+		StringArrayTestClass testClass = new StringArrayTestClass();
+		
+		BeanWrapper bw = new BeanWrapperImpl(testClass);
+		
+		bw.setPropertyValue(propertyValue);
+		
+		String[] result = testClass.getTest();	
+		assertEquals(value.length, result.length);
+		for(int i = 0; i < value.length; i++){
+			assertEquals(value[i], result[i]);
+		}
+	}
+	
 	@Test
 	public void testAlternativesForTypo() {
 		IntelliBean ib = new IntelliBean();
@@ -1892,6 +1910,16 @@ public final class BeanWrapperTests {
 	}
 
 
+	public class StringArrayTestClass {
+		private String[] test = new String[0];
+		public String[] getTest() {
+			return test;
+		}
+		public void setTest(String[] var){
+			test = var;
+		}
+	}
+	
 	@SuppressWarnings("serial")
 	public static class TypedReadOnlyMap extends ReadOnlyMap<String, TestBean> {
 
